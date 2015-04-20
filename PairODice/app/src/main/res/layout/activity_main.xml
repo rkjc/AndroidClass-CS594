@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:weightSum="1.0"
+    android:background="#005500">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight=".7">
+
+        <FrameLayout
+            android:id="@+id/die1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/die_face_1"
+            android:layout_centerVertical="true"/>
+
+        <FrameLayout
+            android:id="@+id/die2"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/die_face_1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight=".3">
+
+        <Button
+            android:id="@+id/roll_button"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/roll"
+            android:textSize="30sp"
+            android:textColor="@color/button_text"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/large_button"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
