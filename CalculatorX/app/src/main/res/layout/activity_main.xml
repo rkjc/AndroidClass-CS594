@@ -4,80 +4,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#034"
     >
 
-    <FrameLayout
-        android:layout_height="120dp"
+    <LinearLayout
+        android:layout_height="0dp"
         android:layout_width="match_parent"
         android:background="#228"
-        android:padding="5dp"
-        android:gravity="fill_horizontal"
-
+        android:padding="0dp"
+        android:gravity="fill_horizontal|bottom"
+        android:orientation="vertical"
+        android:layout_weight="7"
         >
 
         <TextView
+            android:id="@+id/display"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
+            android:gravity="right|bottom"
+            android:layout_gravity="center_horizontal|bottom"
             android:background="#fff"
-
-
+            android:layout_weight="3"
+            android:textSize="40dp"
+            android:text="0"
             />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             android:gravity="bottom"
-
+            android:layout_weight="1"
             >
 
 
-            <FrameLayout
-                android:layout_height="30dp"
+            <TextView
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="#000"
+                android:gravity="top|left"
+                android:layout_weight="2"
+                android:textSize="15dp"
+                android:textColor="#fff"
+                android:text="deg"
+                />
+
+            <Button
+                android:id="@+id/buttonClear"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:background="#f33"
-                android:padding="5dp"
-                android:gravity="fill"
-                android:layout_weight="4"
-                >
+                android:textSize="15dp"
+                android:layout_weight="2"
+                android:text="CLEAR" />
 
-               </FrameLayout>
+            <Button
+                android:id="@+id/mode"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="#3f6"
+                android:textSize="15dp"
+                android:layout_weight="2"
+                android:text="Advanced" />
 
-            <FrameLayout
-                android:layout_height="30dp"
+            <Button
+                android:id="@+id/buttonDelete"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:background="#3af"
-                android:padding="5dp"
-                android:gravity="fill"
-                android:layout_weight="1"
-                >
-
-            </FrameLayout>
-
-                <Button
-                    android:id="@+id/mode"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:background="#3f6"
-                    android:textSize="10dp"
-                    android:layout_weight="1"
-                    android:text="Advanced" />
+                android:textSize="15dp"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:text="@string/backSp" />
 
         </LinearLayout>
 
 
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
-        android:layout_height="400dp"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:background="#0e4"
+        android:background="#034"
         android:padding="0dp"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:gravity="center_vertical"
-        android:layout_gravity="bottom"
-
+        android:layout_gravity="center_vertical"
+        android:layout_weight="24"
         >
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -100,9 +114,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c0r0\n7"
-            android:layout_margin="0dp" />
+            android:textSize="40dp"
+            android:text="7" />
 
         <Button
             android:id="@+id/button8"
@@ -112,9 +125,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c1r0\n8"
-            android:layout_margin="0dp" />
+            android:textSize="40dp"
+            android:text="8" />
 
         <Button
             android:id="@+id/button9"
@@ -124,21 +136,19 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r0\n9"
-            android:layout_margin="0dp" />
+            android:textSize="40dp"
+            android:text="9" />
 
         <Button
-            android:id="@+id/buttonDiv"
+            android:id="@+id/buttonDivide"
             android:layout_column="3"
             android:layout_gravity="fill"
             android:layout_row="0"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r0\n/"
-            android:layout_margin="0dp"/>
+            android:textSize="40dp"
+            android:text="/" />
 
 
 
@@ -152,8 +162,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c0r1\n4" />
+            android:textSize="40dp"
+            android:text="4" />
 
         <Button
             android:id="@+id/button5"
@@ -163,8 +173,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c1r1\n5" />
+            android:textSize="40dp"
+            android:text="5" />
 
         <Button
             android:id="@+id/button6"
@@ -174,8 +184,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r1\n6" />
+            android:textSize="40dp"
+            android:text="6" />
 
         <Button
             android:id="@+id/buttonTimes"
@@ -185,8 +195,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r1\nX" />
+            android:textSize="40dp"
+            android:text="X" />
 
 
 
@@ -200,8 +210,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c0r2\n1" />
+            android:textSize="40dp"
+            android:text="1" />
 
         <Button
             android:id="@+id/button2"
@@ -211,8 +221,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c1r2\n2" />
+            android:textSize="40dp"
+            android:text="2" />
 
         <Button
             android:id="@+id/button3"
@@ -222,8 +232,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r2\n3" />
+            android:textSize="40dp"
+            android:text="3" />
 
         <Button
             android:id="@+id/buttonMinus"
@@ -233,8 +243,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r2\n-" />
+            android:textSize="40dp"
+            android:text="-" />
 
 
 
@@ -248,8 +258,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c0r3\n." />
+            android:textSize="40dp"
+            android:text="." />
 
         <Button
             android:id="@+id/button0"
@@ -259,19 +269,19 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c1r3\n0" />
+            android:textSize="40dp"
+            android:text="0" />
 
         <Button
-            android:id="@+id/buttonEq"
+            android:id="@+id/buttonEquals"
             android:layout_column="2"
             android:layout_gravity="fill"
             android:layout_row="3"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r3\n=" />
+            android:textSize="40dp"
+            android:text="=" />
 
         <Button
             android:id="@+id/buttonPlus"
@@ -281,11 +291,22 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_columnWeight="1"
-
-            android:text="c2r3\n+" />
+            android:textSize="40dp"
+            android:text="+" />
 
     </GridLayout>
 
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="#000"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:gravity="center_vertical|bottom"
+        android:layout_gravity="center_vertical|bottom"
+        android:layout_weight="1"
+        />
 
 </LinearLayout>
