@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1.0"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="#050"
+        android:padding="5dp"
+        android:layout_gravity="fill_horizontal"
+        >
+
+    </FrameLayout>
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="4"
+        android:rowCount="5"
+        android:weightSum="1.0">
+
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#f00"
+            android:padding="5dp"
+
+            >
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#f50"
+            android:padding="5dp"
+            >
+
+        </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#0f0"
+            android:padding="5dp"
+            android:weightSum="0.1">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#055"
+            android:padding="5dp">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#00f"
+            android:padding="5dp"
+            >
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_height="@dimen/gridbox"
+            android:layout_width="@dimen/gridbox"
+            android:background="#f00"
+            android:padding="5dp">
+
+        </FrameLayout>
+
+
+
+        <!-- For gridlayout params, see http://developer.android.com/reference/android/widget/GridLayout.LayoutParams.html -->
+
+
+    </GridLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:text="To Table Layout"
+        android:id="@+id/next"
+        android:layout_gravity="bottom"
+
+
+        />
+
+</LinearLayout>

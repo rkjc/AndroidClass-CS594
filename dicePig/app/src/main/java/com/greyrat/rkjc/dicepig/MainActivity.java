@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -128,7 +129,8 @@ public class MainActivity extends ActionBarActivity {
         Drawable pic = null;
         switch(num){
             case 1:
-                pic = getResources().getDrawable(R.drawable.die_face_1);
+                //pic = getResources().getDrawable(R.drawable.die_face_1);
+                pic = ResourcesCompat.getDrawable(getResources(), R.drawable.die_face_6, null);
                 layout.setBackground(pic);
                 break;
             case 2:
@@ -148,7 +150,8 @@ public class MainActivity extends ActionBarActivity {
                 layout.setBackground(pic);
                 break;
             case 6:
-                pic = getResources().getDrawable(R.drawable.die_face_6);
+                //pic = getResources().getDrawable(R.drawable.die_face_6);
+                ResourcesCompat.getDrawable(getResources(), R.drawable.die_face_6, null);
                 layout.setBackground(pic);
                 break;
 
