@@ -1,99 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1.0"
     android:orientation="vertical"
     >
 
     <FrameLayout
-        android:layout_height="50dp"
+        android:layout_height="120dp"
         android:layout_width="match_parent"
-        android:background="#050"
+        android:background="#228"
         android:padding="5dp"
-        android:layout_gravity="fill_horizontal"
+        android:gravity="fill_horizontal"
+
         >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#fff"
+
+
+            />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+
+            >
+
+
+            <FrameLayout
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:background="#f33"
+                android:padding="5dp"
+                android:gravity="fill"
+                android:layout_weight="4"
+                >
+
+               </FrameLayout>
+
+            <FrameLayout
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:background="#3af"
+                android:padding="5dp"
+                android:gravity="fill"
+                android:layout_weight="1"
+                >
+
+            </FrameLayout>
+
+                <Button
+                    android:id="@+id/mode"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:background="#3f6"
+                    android:textSize="10dp"
+                    android:layout_weight="1"
+                    android:text="Advanced" />
+
+        </LinearLayout>
+
+
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="400dp"
+        android:layout_width="match_parent"
+        android:background="#0e4"
+        android:padding="0dp"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+
+        >
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="fill"
+        android:gravity="center_vertical"
         android:columnCount="4"
-        android:rowCount="5"
-        android:weightSum="1.0">
+        android:rowCount="4"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        >
 
+        <Button
+            android:id="@+id/button7"
+            android:layout_column="0"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
 
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#f00"
-            android:padding="5dp"
+            android:text="c0r0\n7"
+            android:layout_margin="0dp" />
 
-            >
+        <Button
+            android:id="@+id/button8"
+            android:layout_column="1"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
 
-        </FrameLayout>
+            android:text="c1r0\n8"
+            android:layout_margin="0dp" />
 
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#f50"
-            android:padding="5dp"
-            >
+        <Button
+            android:id="@+id/button9"
+            android:layout_column="2"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
 
-        </FrameLayout>
+            android:text="c2r0\n9"
+            android:layout_margin="0dp" />
 
+        <Button
+            android:id="@+id/buttonDiv"
+            android:layout_column="3"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
 
-
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#0f0"
-            android:padding="5dp"
-            android:weightSum="0.1">
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#055"
-            android:padding="5dp">
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#00f"
-            android:padding="5dp"
-            >
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_height="@dimen/gridbox"
-            android:layout_width="@dimen/gridbox"
-            android:background="#f00"
-            android:padding="5dp">
-
-        </FrameLayout>
+            android:text="c2r0\n/"
+            android:layout_margin="0dp"/>
 
 
 
-        <!-- For gridlayout params, see http://developer.android.com/reference/android/widget/GridLayout.LayoutParams.html -->
 
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_column="0"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c0r1\n4" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_column="1"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c1r1\n5" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_column="2"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r1\n6" />
+
+        <Button
+            android:id="@+id/buttonTimes"
+            android:layout_column="3"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r1\nX" />
+
+
+
+
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_column="0"
+            android:layout_gravity="fill"
+            android:layout_row="2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c0r2\n1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_column="1"
+            android:layout_gravity="fill"
+            android:layout_row="2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c1r2\n2" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_column="2"
+            android:layout_gravity="fill"
+            android:layout_row="2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r2\n3" />
+
+        <Button
+            android:id="@+id/buttonMinus"
+            android:layout_column="3"
+            android:layout_gravity="fill"
+            android:layout_row="2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r2\n-" />
+
+
+
+
+
+        <Button
+            android:id="@+id/buttonDot"
+            android:layout_column="0"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c0r3\n." />
+
+        <Button
+            android:id="@+id/button0"
+            android:layout_column="1"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c1r3\n0" />
+
+        <Button
+            android:id="@+id/buttonEq"
+            android:layout_column="2"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r3\n=" />
+
+        <Button
+            android:id="@+id/buttonPlus"
+            android:layout_column="3"
+            android:layout_gravity="fill"
+            android:layout_row="3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+
+            android:text="c2r3\n+" />
 
     </GridLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:text="To Table Layout"
-        android:id="@+id/next"
-        android:layout_gravity="bottom"
-
-
-        />
+    </FrameLayout>
 
 </LinearLayout>
