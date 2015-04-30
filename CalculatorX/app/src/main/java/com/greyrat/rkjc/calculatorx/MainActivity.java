@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
     private double subTotal;
     private TextView display;
     private String displayContent_1 = "0",  displayContent_2 = "";
+    private boolean isReal = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,6 @@ public class MainActivity extends ActionBarActivity {
                 intent.putExtra("subTotal", subTotal);
 
 
-
                 startActivity(intent);
             }
         });
@@ -96,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
                 displayContent_1 = "0";
                 displayContent_2 = "";
                 subTotal = 0;
+                isReal = false;
                 display.setText(displayContent_2 + "\n" + displayContent_1);
             }
         });
@@ -116,26 +117,20 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view){ setFunction("+"); }
         });
-
         buttonMinus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){ setFunction("-"); }
         });
-
         buttonTimes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){ setFunction("X"); }
         });
-
         buttonDivide.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){ setFunction("/"); }
         });
 
-        buttonDot.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){  setDisplay("."); }
-        });
+
 
         buttonEquals.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -148,52 +143,46 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view){  setDisplay("0"); }
         });
-
         oneKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("1"); }
         });
-
         twoKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("2"); }
         });
-
         threeKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("3"); }
         });
-
         fourKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("4"); }
         });
-
         fiveKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("5"); }
         });
-
         sixKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("6"); }
         });
-
         sevenKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("7"); }
         });
-
         eightKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("8"); }
         });
-
         nineKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("9"); }
         });
-
+        buttonDot.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("."); }
+        });
     }
 
     @Override
@@ -231,15 +220,22 @@ public class MainActivity extends ActionBarActivity {
     void setDisplay(String str){
         //if length > 1 and first char == "0" then remove first char
         //check if second char is dot, don't suppress leading zero
-        if(displayContent_1.length() > 0 && displayContent_1.startsWith("0")){
-            displayContent_1 = displayContent_1.substring(1);
+        if(str.equals(".") && !isReal){
+            isReal = true;
+            displayContent_1 = displayContent_1 + str;
+            display.setText(displayContent_2 + "\n" + displayContent_1);
         }
-        displayContent_1 = displayContent_1 + str;
+        else if(displayContent_1.length() == 1 && displayContent_1.startsWith("0")){
+            displayContent_1 = str;
+        }
+        else {
+            displayContent_1 = displayContent_1 + str;
+        }
         display.setText(displayContent_2 + "\n" + displayContent_1);
     }
 
-    void setfunction(String str){
-        displayContent_2 = (displayContent_1 + " str");
+    void setFunction(String str){
+        displayContent_2 = (displayContent_1 + " " + str);
         displayContent_1 = "";
         display.setText(displayContent_2 + "\n" + displayContent_1);
     }
