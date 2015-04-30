@@ -29,9 +29,9 @@ public class MainActivity extends ActionBarActivity {
     private Button buttonClear, buttonDelete;
 
     private Button mode;
-    private double subTotal;
+    private float subTotal;
     private TextView display;
-    private String displayContent_1 = "0",  displayContent_2 = "";
+    private String displayContent_1 = "0",  displayContent_2 = "", functStr = "";
     private boolean isReal = false;
 
     @Override
@@ -58,24 +58,25 @@ public class MainActivity extends ActionBarActivity {
         buttonEquals = (Button)findViewById(R.id.buttonEquals);
         buttonDot = (Button)findViewById(R.id.buttonDot);
 
+        mode = (Button)findViewById(R.id.mode);
+
         display = (TextView) findViewById(R.id.display);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             displayContent_1 = bundle.getString("displayContent_1");
             displayContent_2 = bundle.getString("displayContent_2");
-            subTotal = bundle.getDouble("subTotal");
+            subTotal = bundle.getFloat("subTotal");
         }
 
         display.setText(displayContent_2 + "\n" + displayContent_1);
 
 
 
-        mode = (Button)findViewById(R.id.mode);
+
         mode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
                 Intent intent = new Intent(MainActivity.this,AdvActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
@@ -85,8 +86,24 @@ public class MainActivity extends ActionBarActivity {
                 intent.putExtra("displayContent_1", displayContent_1);
                 intent.putExtra("subTotal", subTotal);
 
-
                 startActivity(intent);
+            }
+        });
+
+        buttonEquals.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                float dc1 = Float.valueOf(displayContent_1.trim()).floatValue();
+                float dc2 = Float.valueOf(displayContent_1.trim()).floatValue();
+
+                if(functStr.equals("+")){
+                    subTotal = dc1 + dc2;
+                }
+
+                displayContent_1 = Float.toString(subTotal);
+                displayContent_2 = "";
+                functStr = "";
+                display.setText(displayContent_2 + "\n" + displayContent_1);
             }
         });
 
@@ -105,6 +122,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view){
                 if(displayContent_1.length() > 1) {
+                    //check for removal of dot and convert to nondecimal status isReal = false
+                    if(displayContent_1.endsWith(".")) { isReal = false;}
                     displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
                 }else{
                     displayContent_1 = "0";
@@ -115,30 +134,24 @@ public class MainActivity extends ActionBarActivity {
 
         buttonPlus.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){ setFunction("+"); }
+            public void onClick(View view){ functStr = "+"; setFunction(functStr); }
         });
         buttonMinus.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){ setFunction("-"); }
+            public void onClick(View view){ functStr = "-"; setFunction(functStr); }
         });
+
         buttonTimes.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){ setFunction("X"); }
+            public void onClick(View view){ functStr = "x"; setFunction(functStr); }
         });
         buttonDivide.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){ setFunction("/"); }
+            public void onClick(View view){ functStr = "/"; setFunction(functStr); }
         });
 
 
-
-        buttonEquals.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-            }
-        });
-
+        // ********* number keys *************
         zeroKey.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){  setDisplay("0"); }
