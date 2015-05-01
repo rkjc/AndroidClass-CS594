@@ -5,6 +5,7 @@ import java.util.Random;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -21,69 +22,240 @@ import android.widget.Toast;
 
 
 public class AdvActivity extends ActionBarActivity {
+    //declare variables
     Random rnd = new Random();
-    private Button oneKey, sevenKey;
-    private Button twoKey;
+    private Button zeroKey, oneKey, twoKey, threeKey, fourKey;
+    private Button fiveKey, sixKey, sevenKey, eightKey, nineKey;
+    private Button buttonPlus, buttonMinus, buttonTimes, buttonDivide, buttonDot, buttonEquals;
+    private Button buttonClear, buttonDelete;
 
     private Button mode;
     private double subTotal;
     private TextView display;
-    private String displayContent2;
+    private String displayContent_1 = "0",  displayContent_2 = "", functionStr = "";
+    String prefix_1 = "", prefix_2 = "";
+    String postfix_1 = "", postfix_2 = "";
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        clearAll();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set which xml file to implement
         setContentView(R.layout.adv_activity);
 
-        Log.d("info-AdvActivity", "entering onCreate");
+        zeroKey = (Button)findViewById(R.id.button00);
+        oneKey = (Button)findViewById(R.id.button01);
+        twoKey = (Button)findViewById(R.id.button02);
+        threeKey = (Button)findViewById(R.id.button03);
+        fourKey = (Button)findViewById(R.id.button10);
+        fiveKey = (Button)findViewById(R.id.button11);
+        sixKey = (Button)findViewById(R.id.button12);
+        sevenKey = (Button)findViewById(R.id.button13);
+        eightKey = (Button)findViewById(R.id.button20);
+        nineKey = (Button)findViewById(R.id.button21);
+
+        buttonClear = (Button)findViewById(R.id.button22);
+        buttonDelete = (Button)findViewById(R.id.button23);
+        buttonPlus = (Button)findViewById(R.id.button30);
+        buttonMinus = (Button)findViewById(R.id.button31);
+        buttonTimes = (Button)findViewById(R.id.button32);
+        buttonDivide = (Button)findViewById(R.id.button33);
+        buttonEquals = (Button)findViewById(R.id.buttonClear);
+        buttonEquals = (Button)findViewById(R.id.buttonDelete);
+        buttonDot = (Button)findViewById(R.id.mode);
+
+        mode = (Button)findViewById(R.id.mode);
 
         display = (TextView) findViewById(R.id.display);
 
+        //init variables
+        displayContent_1 = "0";
+        displayContent_2 = "";
+        functionStr = "";
+        prefix_1 = ""; prefix_2 = "";
+        postfix_1 = ""; postfix_2 = " ";
 
-       Bundle bundle = getIntent().getExtras();
-       if(bundle != null) {
-            displayContent2 = bundle.getString("displayContent");
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            displayContent_1 = bundle.getString("displayContent_1");
+            displayContent_2 = bundle.getString("displayContent_2");
+            prefix_1 = bundle.getString("prefix_1");
+            prefix_2 = bundle.getString("prefix_2");
+            postfix_1 = bundle.getString("postfix_1");
+            postfix_2 = bundle.getString("postfix_2");
             subTotal = bundle.getDouble("subTotal");
+        }
 
-       } else {
-           displayContent2 = "0";
-           subTotal = 0;
-       }
-
-        Log.d("info-AdvActivity", "pre-print displayContent2");
-        Log.d("info-AdvActivity", "printing displayContent2= ");
-        Log.d("info-AdvActivity", displayContent2);
-        Log.d("info-AdvActivity", "post-print displayContent2");
-        display.setText(displayContent2);
+        postDisplay();
 
 
-        sevenKey = (Button)findViewById(R.id.button7);
-        sevenKey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Log.d("info-AdvActivity", "inside sevenKey listener");
-                Log.d("info-AdvActivity", displayContent2);
-                displayContent2 = displayContent2 + "7";
-                display.setText(displayContent2);
-            }
-        });
 
-        mode = (Button)findViewById(R.id.mode);
         mode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
                 Intent intent = new Intent(AdvActivity.this,MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-                intent.putExtra("displayContent", displayContent2);
+                Log.d("info-Main", "passing through mode listener");
+                Log.d("info-Main", "displayContent_1= " + displayContent_1);
+
+                intent.putExtra("displayContent_1", displayContent_1);
+                intent.putExtra("displayContent_2", displayContent_2);
+                intent.putExtra("prefix_1" ,prefix_1);
+                intent.putExtra("prefix_2", prefix_2);
+                intent.putExtra("postfix_1", postfix_1);
+                intent.putExtra("postfix_2", postfix_2);
                 intent.putExtra("subTotal", subTotal);
 
                 startActivity(intent);
             }
         });
 
+        buttonEquals.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if(functionStr.length() == 1) {
+                    double sign1 = 1.0f, sign2 = 1.0f;
+                    double dc1 = 0, dc2 = 0;
+
+                    if (prefix_1.equals("-"))
+                        sign1 = -1;
+                    if (prefix_2.equals("-"))
+                        sign2 = -1;
+                    if(!displayContent_1.equals(""))
+                        dc1 = sign1 * Double.valueOf(displayContent_1.trim());
+                    if(!displayContent_2.equals(""))
+                        dc2 = sign2 * Double.valueOf(displayContent_2.trim());
+
+                    switch (functionStr) {
+                        case "+":
+                            subTotal = dc2 + dc1;
+                            break;
+                        case "-":
+                            subTotal = dc2 - dc1;
+                            break;
+                        case "x":
+                            subTotal = dc2 * dc1;
+                            break;
+                        case "/":
+                            subTotal = dc2 / dc1;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    displayContent_1 = Double.toString(Math.abs(subTotal));
+                    //trim trailing decimal if answer is integer
+//                    if(displayContent_1.substring(displayContent_1.indexOf(".")).length() < 3)
+//                        displayContent_1 = displayContent_1.substring(0, displayContent_1.indexOf("."));
+
+                    if (subTotal < 0) {
+                        prefix_1 = "-";
+                    } else {
+                        prefix_1 = "";
+                    }
+
+                    displayContent_2 = "";
+                    functionStr = "";
+                    prefix_2 = "";
+                    postfix_1 = "";
+                    postfix_2 = "";
+                    subTotal = 0;
+                    postDisplay();
+                }
+            }
+        });
+
+        buttonClear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                clearAll();
+            }
+        });
+
+        buttonDelete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if(displayContent_1.length() > 1) {
+                    displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
+                }else {
+                    displayContent_1 = "0";
+                    prefix_1 = ""; prefix_2 = "";
+                }
+                postDisplay();
+            }
+        });
+
+        //*************** function keys *******************
+        buttonPlus.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){ setFunction("+"); }
+        });
+        buttonMinus.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){ setFunction("-"); }
+        });
+        buttonTimes.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){ setFunction("x"); }
+        });
+        buttonDivide.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){ setFunction("/"); }
+        });
+
+
+        // ********* number keys *************
+        zeroKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("0"); }
+        });
+        oneKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("1"); }
+        });
+        twoKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("2"); }
+        });
+        threeKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("3"); }
+        });
+        fourKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("4"); }
+        });
+        fiveKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("5"); }
+        });
+        sixKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("6"); }
+        });
+        sevenKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("7"); }
+        });
+        eightKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("8"); }
+        });
+        nineKey.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("9"); }
+        });
+        buttonDot.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){  setDisplay("."); }
+        });
     }
 
     @Override
@@ -108,6 +280,16 @@ public class AdvActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void clearAll(){
+        displayContent_1 = "0";
+        displayContent_2 = "";
+        functionStr = "";
+        prefix_1 = ""; prefix_2 = "";
+        postfix_1 = ""; postfix_2 = " ";
+        subTotal = 0;
+        postDisplay();
+    }
+
     public static void disableSoftInputFromAppearing(EditText editText) {
         if (Build.VERSION.SDK_INT >= 11) {
             editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -119,9 +301,53 @@ public class AdvActivity extends ActionBarActivity {
     }
 
     void setDisplay(String str){
+        //check for duplicate dots - ignore second dot
         //if length > 1 and first char == "0" then remove first char
+        //check if negative
+        //check for index of dot. -1 means no dot
+        int dot1 = displayContent_1.indexOf('.');
 
+        if(dot1 == -1) { //no dot in the display string
+            if (str.equals(".")) { //if input is dot
+                displayContent_1 = displayContent_1 + str;
+            } else { //input is not a dot
+                if(displayContent_1.startsWith("0")) { //suppress leading zero
+                    displayContent_1 = displayContent_1.substring(1); //remove
+                }
+                displayContent_1 = displayContent_1 + str;
+            }
+        } else if(!str.equals(".")){ //there is a dot in the display string and not the input
+            displayContent_1 = displayContent_1 + str;
+        }
+
+        postDisplay();
+    }
+
+    void setFunction(String str){
+        //test for negative sign condition and entry display contains only a single zero
+        if(displayContent_1.startsWith("0") && displayContent_1.length() == 1 && str.equals("-")){
+            prefix_1 = "-";
+        } else {
+            functionStr = str;
+            displayContent_2 = displayContent_1;
+            displayContent_1 = "0";
+            prefix_2 = prefix_1;
+            prefix_1 = "";
+        }
+        postDisplay();
+    }
+
+    void postDisplay(){
+        display.setText(prefix_2 + displayContent_2 + postfix_2 + functionStr
+                + "\n" + prefix_1 + displayContent_1 + postfix_1);
+        //return to basic view
     }
 
 
 }
+
+
+
+//for checking for duplicate dots
+//int dot1 = input.indexOf('.');
+//boolean hasTowDots = dot1 != -1 && input.indexOf('.', dot1+1) != -1;
