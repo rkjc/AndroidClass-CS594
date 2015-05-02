@@ -1,5 +1,6 @@
 package com.greyrat.rkjc.calculatorx;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     private String displayContent_1 = "0",  displayContent_2 = "", functionStr = "";
     String prefix_1 = "", prefix_2 = "";
     String postfix_1 = "", postfix_2 = "";
+    boolean finished = false;
 
     @Override
     public void onStart(){
@@ -78,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
         functionStr = "";
         prefix_1 = ""; prefix_2 = "";
         postfix_1 = ""; postfix_2 = " ";
+        finished = false;
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
@@ -149,7 +152,20 @@ public class MainActivity extends ActionBarActivity {
                             break;
                     }
 
-                    displayContent_1 = Double.toString(Math.abs(subTotal));
+                    if(subTotal > 999999999.0){
+                        clearAll();
+                        displayContent_1 = "ERROR";
+                        postDisplay();
+                    }
+
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(8);
+                   // System.out.println(df.format(subTotal));
+
+                    displayContent_1 = df.format(Math.abs(subTotal));
+                    displayContent_1 = displayContent_1.substring(0, Math.min(displayContent_1.length() ,14));
+
+                    Log.d("info-Main", "displayContent_1= " + displayContent_1);
                     //trim trailing decimal if answer is integer
 //                    if(displayContent_1.substring(displayContent_1.indexOf(".")).length() < 3)
 //                        displayContent_1 = displayContent_1.substring(0, displayContent_1.indexOf("."));
@@ -166,6 +182,7 @@ public class MainActivity extends ActionBarActivity {
                     postfix_1 = "";
                     postfix_2 = "";
                     subTotal = 0;
+                    finished = true;
                     postDisplay();
                 }
             }
@@ -183,9 +200,15 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view){
                 if(displayContent_1.length() > 1) {
                     displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
-                }else {
+                }else if(displayContent_1.equals("0")) {
+                    functionStr = "";
+                    displayContent_1 = displayContent_2;
+                    displayContent_2 = "";
+                    prefix_1 = postfix_2;
+                    prefix_2 = "";
+                } else {
                     displayContent_1 = "0";
-                    prefix_1 = ""; prefix_2 = "";
+                    prefix_1 = "";
                 }
                 postDisplay();
             }
@@ -300,25 +323,32 @@ public class MainActivity extends ActionBarActivity {
     }
 
     void setDisplay(String str){
-        //check for duplicate dots - ignore second dot
-        //if length > 1 and first char == "0" then remove first char
-        //check if negative
-        //check for index of dot. -1 means no dot
-        int dot1 = displayContent_1.indexOf('.');
+        //limit display length
+        if(displayContent_1.length() < 14) {
+            //check if a calculation has just ended and reset with next number key
+            if (finished) {
+                clearAll();
+                finished = false;
+            }
+            //check for duplicate dots - ignore second dot
+            //if length > 1 and first char == "0" then remove first char
+            //check if negative
+            //check for index of dot. -1 means no dot
+            int dot1 = displayContent_1.indexOf('.');
 
-        if(dot1 == -1) { //no dot in the display string
-            if (str.equals(".")) { //if input is dot
-                displayContent_1 = displayContent_1 + str;
-            } else { //input is not a dot
-                if(displayContent_1.startsWith("0")) { //suppress leading zero
-                    displayContent_1 = displayContent_1.substring(1); //remove
+            if (dot1 == -1) { //no dot in the display string
+                if (str.equals(".")) { //if input is dot
+                    displayContent_1 = displayContent_1 + str;
+                } else { //input is not a dot
+                    if (displayContent_1.startsWith("0")) { //suppress leading zero
+                        displayContent_1 = displayContent_1.substring(1); //remove
+                    }
+                    displayContent_1 = displayContent_1 + str;
                 }
+            } else if (!str.equals(".")) { //there is a dot in the display string and not the input
                 displayContent_1 = displayContent_1 + str;
             }
-        } else if(!str.equals(".")){ //there is a dot in the display string and not the input
-            displayContent_1 = displayContent_1 + str;
         }
-
         postDisplay();
     }
 
@@ -326,17 +356,22 @@ public class MainActivity extends ActionBarActivity {
         //test for negative sign condition and entry display contains only a single zero
         if(displayContent_1.startsWith("0") && displayContent_1.length() == 1 && str.equals("-")){
             prefix_1 = "-";
-        } else {
+            finished = false;
+        } else if(functionStr.length() == 0){
             functionStr = str;
             displayContent_2 = displayContent_1;
             displayContent_1 = "0";
             prefix_2 = prefix_1;
             prefix_1 = "";
+            finished = false;
+        } else {
+            functionStr = str;
         }
         postDisplay();
     }
 
    void postDisplay(){
+
        display.setText(prefix_2 + displayContent_2 + postfix_2 + functionStr
                + "\n" + prefix_1 + displayContent_1 + postfix_1);
    }
@@ -349,3 +384,6 @@ public class MainActivity extends ActionBarActivity {
 //for checking for duplicate dots
 //int dot1 = input.indexOf('.');
 //boolean hasTowDots = dot1 != -1 && input.indexOf('.', dot1+1) != -1;
+
+//debug statements
+//Log.d("info-Main", "displayContent_1= " + displayContent_1);
