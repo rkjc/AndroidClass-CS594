@@ -129,15 +129,13 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view){
                 if(displayContent_1.length() > 1) {
                     displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
-                }else if(displayContent_1.equals("0")) { //d_1 length == 1
+                }else if(displayContent_1.equals("0") && displayContent_2.length() > 0) { //d_1 length == 1
                     functionStr = "";
                     //move back to one line being displayed
                     displayContent_1 = displayContent_2;
                     displayContent_2 = "";
-                    prefix_1 = "";
-                    prefix_2 = "";
-                    postfix_1 = "";
-                    postfix_2 = "";
+                    prefix_1 = ""; postfix_1 = "";
+                    prefix_2 = ""; postfix_2 = "";
                     sign_1 = sign_2;
                     sign_2 = "";
                 } else { //d_1 length == 1 and d_1 != "0"
@@ -184,8 +182,36 @@ public class MainActivity extends ActionBarActivity {
                         case "cos":
                             subTotal = Math.cos(dc1);
                             break;
+                        case "tan":
+                            subTotal = Math.tan(dc1);
+                            break;
+                        case "ln":
+                            subTotal = Math.log(dc1);
+                            break;
+                        case "log":
+                            subTotal = Math.log10(dc1);
+                            break;
+                        case "%":
+                            subTotal = dc1 / 100;
+                            break;
+                        case "!":
+                            int fact = 1; // this  will be the result
+                            for (int i = 1; i <= (int)dc1; i++) {
+                                fact *= i;
+                            }
+                            subTotal = (double)fact;
+                            break;
+                        case "sqrt":
+                            subTotal = Math.sqrt(dc1);
+                            break;
                         case "^":
                             subTotal = Math.pow(dc2, dc1);
+                            break;
+                        case "logx":
+                            subTotal = (Math.log(dc2) / Math.log(dc1));
+                            break;
+                        case "log2":
+                            subTotal = (Math.log(dc2) / Math.log(2));
                             break;
                         default:
                             break;
@@ -280,7 +306,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.adv_mode) {
+            switchMode();
             return true;
         }
 
@@ -381,31 +408,32 @@ public class MainActivity extends ActionBarActivity {
             clearAll();
             displayContent_1 = "ERROR";
             postDisplay();
-        }
+        } else {
 
-        DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(8);
-        // System.out.println(df.format(subTotal));
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(8);
+            // System.out.println(df.format(subTotal));
 
-        displayContent_1 = df.format(Math.abs(subTotal));
-        displayContent_1 = displayContent_1.substring(0, Math.min(displayContent_1.length() ,14));
+            displayContent_1 = df.format(Math.abs(subTotal));
+            displayContent_1 = displayContent_1.substring(0, Math.min(displayContent_1.length(), 14));
 
-        Log.d("info-Main", "displayContent_1= " + displayContent_1);
-        //trim trailing decimal if answer is integer
+            Log.d("info-Main", "displayContent_1= " + displayContent_1);
+            //trim trailing decimal if answer is integer
 //                    if(displayContent_1.substring(displayContent_1.indexOf(".")).length() < 3)
 //                        displayContent_1 = displayContent_1.substring(0, displayContent_1.indexOf("."));
 
-        if (subTotal < 0) {
-            sign_1 = "-";
-        } else {
-            sign_1 = "";
-        }
+            if (subTotal < 0) {
+                sign_1 = "-";
+            } else {
+                sign_1 = "";
+            }
 
-        clearTop();
-        postDisplay();
+            clearTop();
+            postDisplay();
+        }
     }
 
-    void switchMode(){  //back to basic
+    void switchMode(){  //to advance keyboard
         Intent intent = new Intent(MainActivity.this,AdvActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
@@ -428,11 +456,5 @@ public class MainActivity extends ActionBarActivity {
     }
 }
 
-
-
-//for checking for duplicate dots
-//int dot1 = input.indexOf('.');
-//boolean hasTowDots = dot1 != -1 && input.indexOf('.', dot1+1) != -1;
-
-//debug statements
+//debug statements generic
 //Log.d("info-Main", "displayContent_1= " + displayContent_1);

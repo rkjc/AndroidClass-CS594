@@ -29,7 +29,7 @@ public class AdvActivity extends ActionBarActivity {
     private Button sinKey, cosKey, tanKey, button03;
     private Button lnKey, logKey, piKey, eKey;
     private Button percentKey, factorialKey, sqrtKey, powerKey;
-    private Button logxKey, log2Key, button32, equalKey;
+    private Button logxKey, log2Key, button32, button33;
 
     private double subTotal;
     private TextView display;
@@ -72,7 +72,7 @@ public class AdvActivity extends ActionBarActivity {
         logxKey = (Button)findViewById(R.id.button30);
         log2Key = (Button)findViewById(R.id.button31);
         button32 = (Button)findViewById(R.id.button32);
-        equalKey = (Button)findViewById(R.id.button33);
+        button33 = (Button)findViewById(R.id.button33);
 
         buttonClear = (Button)findViewById(R.id.buttonClear);
         buttonDelete = (Button)findViewById(R.id.buttonDelete);
@@ -121,9 +121,7 @@ public class AdvActivity extends ActionBarActivity {
 
         mode.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
-                switchMode();
-            }
+            public void onClick(View view){ switchMode();  }
         });
 
         buttonClear.setOnClickListener(new View.OnClickListener(){
@@ -141,71 +139,6 @@ public class AdvActivity extends ActionBarActivity {
             }
         });
 
-        equalKey.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-//                Log.d("info-ADV", "- equalKey.setOnClickListener -");
-//                if(functionStr.length() == 1) {
-//                    double sign1 = 1.0f, sign2 = 1.0f;
-//                    double dc1 = 0, dc2 = 0;
-//
-//                    if (sign_1.equals("-"))
-//                        sign1 = -1;
-//                    if (sign_2.equals("-"))
-//                        sign2 = -1;
-//                    if(!displayContent_1.equals(""))
-//                        dc1 = sign1 * Double.valueOf(displayContent_1.trim());
-//                    if(!displayContent_2.equals(""))
-//                        dc2 = sign2 * Double.valueOf(displayContent_2.trim());
-//
-//                    switch (functionStr) {
-//                        case "sin":
-//                            Log.d("info-ADV", "equalKey.  pressed sin key");
-//                            break;
-//                        case "cos":
-//
-//                            break;
-//                        case "tan":
-//
-//                            break;
-//                        case "03":
-//
-//                            break;
-//                        case "ln":
-//
-//                            break;
-//                        case "log":
-//
-//                            break;
-//                        case "%":
-//
-//                            break;
-//                        case "!":
-//
-//                            break;
-//                        case "sqrt":
-//
-//                            break;
-//                        case "^":
-//                            needSecondOperand = true;
-//                            break;
-//                        case "logx":
-//                            needSecondOperand = true;
-//                            break;
-//                        case "log2":
-//
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//
-//                    displayAdvCalculation();
-//                }
-            }
-        });
-
-
-
 
         //*************** function keys *******************
         sinKey.setOnClickListener(new View.OnClickListener(){
@@ -222,7 +155,7 @@ public class AdvActivity extends ActionBarActivity {
         });
         button03.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){  setAdvFunction("03"); }
+            public void onClick(View view){   }
         });
         lnKey.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -258,7 +191,11 @@ public class AdvActivity extends ActionBarActivity {
         });
         button32.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){  setAdvFunction("32"); }
+            public void onClick(View view){   }
+        });
+        button33.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){   }
         });
 
 
@@ -288,9 +225,12 @@ public class AdvActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        if (id == R.id.base_mode) {
+            switchMode();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -306,16 +246,6 @@ public class AdvActivity extends ActionBarActivity {
         needSecondOperand = false;
         textSize = "40dp";
         switchMode();
-    }
-
-    public static void disableSoftInputFromAppearing(EditText editText) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-            editText.setTextIsSelectable(true);
-        } else {
-            editText.setRawInputType(InputType.TYPE_NULL);
-            editText.setFocusable(true);
-        }
     }
 
     void setAdvDisplay(String str){
@@ -357,29 +287,11 @@ public class AdvActivity extends ActionBarActivity {
         }
 
         switchMode();
-        //postDisplay();
     }
 
     void postDisplay(){
-        Log.d("info-ADV", "postDisplay= -------------");
-        Log.d("info-ADV", "postDisplay= displayContent_1= " + displayContent_1 +" ;");
-        Log.d("info-ADV", "postDisplay= displayContent_2= " + displayContent_2 +" ;");
-        Log.d("info-ADV", "postDisplay= prefix_1= " + prefix_1 + " ;");
-        Log.d("info-ADV", "postDisplay= prefix_2= " + prefix_2 + " ;");
-        Log.d("info-ADV", "postDisplay= sign_1= " + sign_1 + " ;");
-        Log.d("info-ADV", "postDisplay= sign_2= " + sign_2 + " ;");
-        Log.d("info-ADV", "postDisplay= postfix_1= " + postfix_1 + " ;");
-        Log.d("info-ADV", "postDisplay= postfix_2= " + postfix_2 + " ;");
-        Log.d("info-ADV", "postDisplay= functionStr= " + functionStr + " ;");
-        Log.d("info-ADV", "postDisplay= -------------");
-
         display.setText(prefix_2 + sign_2 + displayContent_2 + postfix_2
                 + "\n" + prefix_1 + sign_1 + displayContent_1 + postfix_1);
-        //return to basic view - maybe
-    }
-
-    void displayAdvCalculation(){
-        switchMode();
     }
 
     void switchMode(){  //back to basic
