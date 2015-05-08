@@ -3,5 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="adv_mode">Advanced keyboard</string>
+    <string name="base_mode">Basic keyboard</string>
     <string name="backSp">Del</string>
 </resources>

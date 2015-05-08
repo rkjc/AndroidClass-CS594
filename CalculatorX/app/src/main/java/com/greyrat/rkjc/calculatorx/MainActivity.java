@@ -31,17 +31,22 @@ public class MainActivity extends ActionBarActivity {
     private Button buttonClear, buttonDelete;
 
     private Button mode;
+
     private double subTotal;
     private TextView display;
     private String displayContent_1 = "0",  displayContent_2 = "", functionStr = "";
-    String prefix_1 = "", prefix_2 = "";
-    String postfix_1 = "", postfix_2 = "";
-    boolean finished = false;
+    private String prefix_1 = "", prefix_2 = "";
+    private String postfix_1 = "", postfix_2 = "";
+    private String sign_1 = "", sign_2 = "";
+    private String textSize = "40dp";
+    private boolean finished = false;
+    private boolean needSecondOperand = false;
+
 
     @Override
     public void onStart(){
        super.onStart();
-       clearAll();
+       //might need to use this
     }
 
     @Override
@@ -80,7 +85,9 @@ public class MainActivity extends ActionBarActivity {
         functionStr = "";
         prefix_1 = ""; prefix_2 = "";
         postfix_1 = ""; postfix_2 = " ";
+        sign_1 = ""; sign_2 = "";
         finished = false;
+        textSize = "40dp";
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
@@ -88,53 +95,74 @@ public class MainActivity extends ActionBarActivity {
             displayContent_2 = bundle.getString("displayContent_2");
             prefix_1 = bundle.getString("prefix_1");
             prefix_2 = bundle.getString("prefix_2");
+            sign_1 = bundle.getString("sign_1");
+            sign_2 = bundle.getString("sign_2");
             postfix_1 = bundle.getString("postfix_1");
             postfix_2 = bundle.getString("postfix_2");
+            functionStr = bundle.getString("functionStr");
+            textSize = bundle.getString("textSize");
             subTotal = bundle.getDouble("subTotal");
+            needSecondOperand = bundle.getBoolean("needSecondOperand");
+            if(displayContent_1 == null){ //as happens when the app is restarted
+                clearAll();
+            }
         }
 
         postDisplay();
 
-
-
-
+        //*************** action keys *******************
         mode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this,AdvActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                switchMode();
+            }
+        });
+        buttonClear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                clearAll();
+            }
+        });
 
-                Log.d("info-Main", "passing through mode listener");
-                Log.d("info-Main", "displayContent_1= " + displayContent_1);
-
-                intent.putExtra("displayContent_1", displayContent_1);
-                intent.putExtra("displayContent_2", displayContent_2);
-                intent.putExtra("prefix_1" ,prefix_1);
-                intent.putExtra("prefix_2", prefix_2);
-                intent.putExtra("postfix_1", postfix_1);
-                intent.putExtra("postfix_2", postfix_2);
-                intent.putExtra("subTotal", subTotal);
-
-                startActivity(intent);
+        buttonDelete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if(displayContent_1.length() > 1) {
+                    displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
+                }else if(displayContent_1.equals("0") && displayContent_2.length() > 0) { //d_1 length == 1
+                    functionStr = "";
+                    //move back to one line being displayed
+                    displayContent_1 = displayContent_2;
+                    displayContent_2 = "";
+                    prefix_1 = ""; postfix_1 = "";
+                    prefix_2 = ""; postfix_2 = "";
+                    sign_1 = sign_2;
+                    sign_2 = "";
+                } else { //d_1 length == 1 and d_1 != "0"
+                    displayContent_1 = "0";
+                    sign_1 = "";
+                }
+                postDisplay();
             }
         });
 
         buttonEquals.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                if(functionStr.length() == 1) {
+                if(functionStr.length() > 0) {
                     double sign1 = 1.0f, sign2 = 1.0f;
                     double dc1 = 0, dc2 = 0;
 
-                    if (prefix_1.equals("-"))
+                    if (sign_1.equals("-"))
                         sign1 = -1;
-                    if (prefix_2.equals("-"))
+                    if (sign_2.equals("-"))
                         sign2 = -1;
                     if(!displayContent_1.equals(""))
                         dc1 = sign1 * Double.valueOf(displayContent_1.trim());
                     if(!displayContent_2.equals(""))
                         dc2 = sign2 * Double.valueOf(displayContent_2.trim());
 
+                    Log.d("info-MAIN", "buttonEquals.setOnClickListener= functionStr= " + functionStr);
                     switch (functionStr) {
                         case "+":
                             subTotal = dc2 + dc1;
@@ -148,71 +176,53 @@ public class MainActivity extends ActionBarActivity {
                         case "/":
                             subTotal = dc2 / dc1;
                             break;
+                        case "sin":
+                            subTotal = Math.cos(dc1);
+                            break;
+                        case "cos":
+                            subTotal = Math.cos(dc1);
+                            break;
+                        case "tan":
+                            subTotal = Math.tan(dc1);
+                            break;
+                        case "ln":
+                            subTotal = Math.log(dc1);
+                            break;
+                        case "log":
+                            subTotal = Math.log10(dc1);
+                            break;
+                        case "%":
+                            subTotal = dc1 / 100;
+                            break;
+                        case "!":
+                            int fact = 1; // this  will be the result
+                            for (int i = 1; i <= (int)dc1; i++) {
+                                fact *= i;
+                            }
+                            subTotal = (double)fact;
+                            break;
+                        case "sqrt":
+                            subTotal = Math.sqrt(dc1);
+                            break;
+                        case "^":
+                            subTotal = Math.pow(dc2, dc1);
+                            break;
+                        case "logx":
+                            subTotal = (Math.log(dc2) / Math.log(dc1));
+                            break;
+                        case "log2":
+                            subTotal = (Math.log(dc2) / Math.log(2));
+                            break;
                         default:
                             break;
                     }
 
-                    if(subTotal > 999999999.0){
-                        clearAll();
-                        displayContent_1 = "ERROR";
-                        postDisplay();
-                    }
-
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(8);
-                   // System.out.println(df.format(subTotal));
-
-                    displayContent_1 = df.format(Math.abs(subTotal));
-                    displayContent_1 = displayContent_1.substring(0, Math.min(displayContent_1.length() ,14));
-
-                    Log.d("info-Main", "displayContent_1= " + displayContent_1);
-                    //trim trailing decimal if answer is integer
-//                    if(displayContent_1.substring(displayContent_1.indexOf(".")).length() < 3)
-//                        displayContent_1 = displayContent_1.substring(0, displayContent_1.indexOf("."));
-
-                    if (subTotal < 0) {
-                        prefix_1 = "-";
-                    } else {
-                        prefix_1 = "";
-                    }
-
-                    displayContent_2 = "";
-                    functionStr = "";
-                    prefix_2 = "";
-                    postfix_1 = "";
-                    postfix_2 = "";
-                    subTotal = 0;
-                    finished = true;
-                    postDisplay();
+                    displayCalculation();
                 }
             }
         });
 
-        buttonClear.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                clearAll();
-            }
-        });
 
-        buttonDelete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                if(displayContent_1.length() > 1) {
-                    displayContent_1 = displayContent_1.substring(0, displayContent_1.length() - 1);
-                }else if(displayContent_1.equals("0")) {
-                    functionStr = "";
-                    displayContent_1 = displayContent_2;
-                    displayContent_2 = "";
-                    prefix_1 = postfix_2;
-                    prefix_2 = "";
-                } else {
-                    displayContent_1 = "0";
-                    prefix_1 = "";
-                }
-                postDisplay();
-            }
-        });
 
         //*************** function keys *******************
         buttonPlus.setOnClickListener(new View.OnClickListener(){
@@ -284,6 +294,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
@@ -295,20 +306,31 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.adv_mode) {
+            switchMode();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    //++++++++++++++++++++ function definitions  ++++++++++++++++
     public void clearAll(){
         displayContent_1 = "0";
+        sign_1 = "";
+        clearTop();
+    }
+
+    public void clearTop(){
         displayContent_2 = "";
         functionStr = "";
         prefix_1 = ""; prefix_2 = "";
-        postfix_1 = ""; postfix_2 = " ";
+        postfix_1 = ""; postfix_2 = "";
+        sign_2 = "";
+        textSize = "40dp";
         subTotal = 0;
+        finished = true;
+
         postDisplay();
     }
 
@@ -325,26 +347,18 @@ public class MainActivity extends ActionBarActivity {
     void setDisplay(String str){
         //limit display length
         if(displayContent_1.length() < 14) {
-            //check if a calculation has just ended and reset with next number key
+            //check if a calculation has just ended and reset with next number key input
             if (finished) {
                 clearAll();
                 finished = false;
             }
+
             //check for duplicate dots - ignore second dot
-            //if length > 1 and first char == "0" then remove first char
-            //check if negative
             //check for index of dot. -1 means no dot
             int dot1 = displayContent_1.indexOf('.');
 
             if (dot1 == -1) { //no dot in the display string
-                if (str.equals(".")) { //if input is dot
-                    displayContent_1 = displayContent_1 + str;
-                } else { //input is not a dot
-                    if (displayContent_1.startsWith("0")) { //suppress leading zero
-                        displayContent_1 = displayContent_1.substring(1); //remove
-                    }
-                    displayContent_1 = displayContent_1 + str;
-                }
+                displayContent_1 = displayContent_1 + str;
             } else if (!str.equals(".")) { //there is a dot in the display string and not the input
                 displayContent_1 = displayContent_1 + str;
             }
@@ -355,14 +369,17 @@ public class MainActivity extends ActionBarActivity {
     void setFunction(String str){
         //test for negative sign condition and entry display contains only a single zero
         if(displayContent_1.startsWith("0") && displayContent_1.length() == 1 && str.equals("-")){
-            prefix_1 = "-";
+            sign_1 = "-";
             finished = false;
         } else if(functionStr.length() == 0){
             functionStr = str;
+            postfix_2 = " " + str;
             displayContent_2 = displayContent_1;
             displayContent_1 = "0";
             prefix_2 = prefix_1;
             prefix_1 = "";
+            sign_2 = sign_1;
+            sign_1 = "";
             finished = false;
         } else {
             functionStr = str;
@@ -371,19 +388,73 @@ public class MainActivity extends ActionBarActivity {
     }
 
    void postDisplay(){
+       //suppress leading zeros
+       int dotLoc = displayContent_1.indexOf(".");
+       if(dotLoc == 0) {
+           displayContent_1 = "0" + displayContent_1;
+       } else if( displayContent_1.length() > 1 && displayContent_1.startsWith("0") && (dotLoc > 1 || dotLoc < 0)){
+           displayContent_1 = displayContent_1.substring(1);
+       }
 
-       display.setText(prefix_2 + displayContent_2 + postfix_2 + functionStr
-               + "\n" + prefix_1 + displayContent_1 + postfix_1);
+       //suppress trailing zeros
+       //TODO
+
+       display.setText(prefix_2 + sign_2 + displayContent_2 + postfix_2
+               + "\n" + prefix_1 + sign_1 + displayContent_1 + postfix_1);
    }
 
+    void displayCalculation(){
+        if(subTotal > 99999999999999.0){
+            clearAll();
+            displayContent_1 = "ERROR";
+            postDisplay();
+        } else {
 
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(8);
+            // System.out.println(df.format(subTotal));
+
+            displayContent_1 = df.format(Math.abs(subTotal));
+            displayContent_1 = displayContent_1.substring(0, Math.min(displayContent_1.length(), 14));
+
+            Log.d("info-Main", "displayContent_1= " + displayContent_1);
+            //trim trailing decimal if answer is integer
+//                    if(displayContent_1.substring(displayContent_1.indexOf(".")).length() < 3)
+//                        displayContent_1 = displayContent_1.substring(0, displayContent_1.indexOf("."));
+
+            if (subTotal < 0) {
+                sign_1 = "-";
+            } else {
+                sign_1 = "";
+            }
+
+            clearTop();
+            postDisplay();
+        }
+    }
+
+    void switchMode(){  //to advance keyboard
+        Intent intent = new Intent(MainActivity.this,AdvActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        Log.d("info-MAIN", "mode.setOnClickListener displayContent_1= " + displayContent_1);
+
+        intent.putExtra("displayContent_1", displayContent_1);
+        intent.putExtra("displayContent_2", displayContent_2);
+        intent.putExtra("prefix_1" ,prefix_1);
+        intent.putExtra("prefix_2", prefix_2);
+        intent.putExtra("sign_1" ,sign_1);
+        intent.putExtra("sign_2", sign_2);
+        intent.putExtra("postfix_1", postfix_1);
+        intent.putExtra("postfix_2", postfix_2);
+        intent.putExtra("functionStr", functionStr);
+        intent.putExtra("textSize", textSize);
+        intent.putExtra("subTotal", subTotal);
+        intent.putExtra("needSecondOperand", needSecondOperand);
+
+        startActivity(intent);
+    }
 }
 
-
-
-//for checking for duplicate dots
-//int dot1 = input.indexOf('.');
-//boolean hasTowDots = dot1 != -1 && input.indexOf('.', dot1+1) != -1;
-
-//debug statements
+//debug statements generic
 //Log.d("info-Main", "displayContent_1= " + displayContent_1);
