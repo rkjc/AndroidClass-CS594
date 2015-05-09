@@ -1,4 +1,4 @@
-package com.detroitteatime.myflickr;
+package com.rkjc.greyrat.myflickr;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

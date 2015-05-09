@@ -1,7 +1,5 @@
-package com.detroitteatime.myflickr;
+package com.rkjc.greyrat.myflickr;
 
-import android.app.ListFragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**

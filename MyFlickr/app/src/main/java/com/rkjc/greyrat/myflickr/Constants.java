@@ -1,4 +1,4 @@
-package com.detroitteatime.myflickr;
+package com.rkjc.greyrat.myflickr;
 
 /**
  * Created by mark on 4/29/15.

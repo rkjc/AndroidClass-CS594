@@ -1,4 +1,4 @@
-package com.detroitteatime.myflickr;
+package com.rkjc.greyrat.myflickr;
 
 import android.util.Log;
 import org.json.JSONArray;
