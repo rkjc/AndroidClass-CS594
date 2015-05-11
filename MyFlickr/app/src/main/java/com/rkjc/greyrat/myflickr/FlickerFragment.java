@@ -14,7 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 /**
- * Created by mark on 4/29/15.
+ * Created by rc on 5/8/15.
  */
 public class FlickerFragment extends Fragment implements AdapterView.OnItemClickListener{
     String[] mTitles;

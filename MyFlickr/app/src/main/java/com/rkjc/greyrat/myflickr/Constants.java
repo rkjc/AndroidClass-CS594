@@ -1,7 +1,7 @@
 package com.rkjc.greyrat.myflickr;
 
 /**
- * Created by mark on 4/29/15.
+ * Created by rc 5/8/15.
  */
 public class Constants {
     public static final int NUM_PHOTOS = 10;

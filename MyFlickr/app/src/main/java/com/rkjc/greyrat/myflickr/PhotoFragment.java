@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by mark on 5/1/15.
+ * Created by rc on 5/8/15.
  */
 public class PhotoFragment extends Fragment {
     private String photoURL;
