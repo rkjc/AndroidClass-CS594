@@ -1,0 +1,8 @@
+ 	MyFlickr
+
+Key:
+638522b9bcdc3fae0a686883ebd5706d
+
+Secret:
+d7557543c05eeca1 
+
