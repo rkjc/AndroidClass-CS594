@@ -3,13 +3,16 @@
 	
 	"message":0.0428,
 	
-	"city":{"id":1851632,"name":"Shuzenji",
+	"city":{"id":1851632,
 	
-	"coord":{"lon":138.933334,"lat":34.966671},
+			"name":"Shuzenji",
 	
-	"country":"JP",
+			"coord":{"lon":138.933334,"lat":34.966671},
 	
-	"population":0},
+			"country":"JP",
+	
+			"population":0
+		},
 	
 	"cnt":10,
 	
